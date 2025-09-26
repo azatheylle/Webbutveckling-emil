@@ -1,0 +1,22 @@
+body {
+    background-color: black;
+}
+
+.container {
+    background-color: blue;
+    width : 60wh;
+    height: 50wh;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 900px) {
+    .container {
+        background-color: green;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .container {
+        background-color: red;
+    }
+}

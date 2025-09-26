@@ -3,10 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projekt 1</title>
+    <title>Timer</title>
 </head>
 <body>
-    <h1>Projekt 1</h1>
-    <p>Denna sida är tom än så länge.</p>
+    <h1>Timer</h1>
+    <label for="time-input">Ange tid:</label>
+    <input type="number" id="time-input" placeholder="Ange tid i millisekunder">
+    <button onclick="myVar = setTimeout(myFunction, document.getElementById('time-input').value)">Start</button>
+    <script>
+function myFunction() {
+  alert("Hello");
+}
+</script>
+    <button onclick="clearTimeout(myVar)">Stop</button>
 </body>
 </html>
