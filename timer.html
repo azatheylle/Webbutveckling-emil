@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <link rel="stylesheet" href="stylestimer.css">
+</head>
+<body>
+    <main class="page">
+        <section class="card" role="region" aria-labelledby="timer-title">
+            <h1 id="timer-title">Timer</h1>
+            <p class="lead">Ange en tid i millisekunder och starta timern. Du kan pausa och återuppta.</p>
+
+            <div class="display" id="display">00:00.0</div>
+
+            <div class="field">
+                <label for="time-input">Tid (ms)</label>
+                <input type="number" id="time-input" inputmode="numeric" min="0" step="100" placeholder="t.ex. 3000">
+            </div>
+
+            <div class="actions">
+                <button class="btn primary" id="start-btn">Starta</button>
+                <button class="btn" id="pause-btn" disabled>Pausa</button>
+                <button class="btn" id="resume-btn" disabled>Fortsätt</button>
+                <button class="btn" id="stop-btn" disabled>Stoppa</button>
+            </div>
+
+            <div class="status" id="status" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <script>
+    // Countdown with pause/resume
+    let intervalId = null;
+    let remainingMs = 0;
+    let isRunning = false;
+
+    function formatTime(ms) {
+        const totalTenth = Math.max(0, Math.floor(ms / 100));
+        const tenths = totalTenth % 10;
+        const totalSeconds = Math.floor(totalTenth / 10);
+        const seconds = totalSeconds % 60;
+        const minutes = Math.floor(totalSeconds / 60);
+        const pad = (n) => n.toString().padStart(2, '0');
+        return `${pad(minutes)}:${pad(seconds)}.${tenths}`;
+    }
+
+    function updateDisplay() {
+        document.getElementById('display').textContent = formatTime(remainingMs);
+    }
+
+    function setButtons({start=false, pause=false, resume=false, stop=false}) {
+        document.getElementById('start-btn').disabled = !start;
+        document.getElementById('pause-btn').disabled = !pause;
+        document.getElementById('resume-btn').disabled = !resume;
+        document.getElementById('stop-btn').disabled = !stop;
+    }
+
+    function tick() {
+        const step = 100; // update each 100ms
+        remainingMs -= step;
+        if (remainingMs <= 0) {
+            remainingMs = 0;
+            clearInterval(intervalId);
+            intervalId = null;
+            isRunning = false;
+            updateDisplay();
+            document.getElementById('status').textContent = 'Klart!';
+            document.getElementById('status').className = 'status success';
+            alert('Hello');
+            setButtons({start:true, pause:false, resume:false, stop:false});
+            return;
+        }
+        updateDisplay();
+    }
+
+    function startTimer() {
+        const input = document.getElementById('time-input');
+        const status = document.getElementById('status');
+        const val = Number(input.value);
+        if (!Number.isFinite(val) || val < 0) {
+            status.textContent = 'Ange en giltig tid i millisekunder (0 eller mer).';
+            status.className = 'status error';
+            return;
+        }
+        if (intervalId) clearInterval(intervalId);
+        remainingMs = Math.floor(val);
+        updateDisplay();
+        status.textContent = remainingMs === 0 ? 'Visar meddelande direkt…' : `Startar timer på ${remainingMs} ms…`;
+        status.className = 'status';
+        if (remainingMs === 0) {
+            tick();
+            return;
+        }
+        intervalId = setInterval(tick, 100);
+        isRunning = true;
+        setButtons({start:false, pause:true, resume:false, stop:true});
+    }
+
+    function pauseTimer() {
+        if (!isRunning || !intervalId) return;
+        clearInterval(intervalId);
+        intervalId = null;
+        isRunning = false;
+        document.getElementById('status').textContent = 'Pausad.';
+        setButtons({start:false, pause:false, resume:true, stop:true});
+    }
+
+    function resumeTimer() {
+        if (isRunning || remainingMs <= 0) return;
+        intervalId = setInterval(tick, 100);
+        isRunning = true;
+        document.getElementById('status').textContent = 'Fortsätter…';
+        setButtons({start:false, pause:true, resume:false, stop:true});
+    }
+
+    function stopTimer() {
+        if (intervalId) clearInterval(intervalId);
+        intervalId = null;
+        isRunning = false;
+        remainingMs = 0;
+        updateDisplay();
+        document.getElementById('status').textContent = 'Timer stoppad.';
+        document.getElementById('status').className = 'status';
+        setButtons({start:true, pause:false, resume:false, stop:false});
+    }
+
+    // Wire up buttons
+    document.getElementById('start-btn').addEventListener('click', startTimer);
+    document.getElementById('pause-btn').addEventListener('click', pauseTimer);
+    document.getElementById('resume-btn').addEventListener('click', resumeTimer);
+    document.getElementById('stop-btn').addEventListener('click', stopTimer);
+
+    // Initialize display
+    updateDisplay();
+    </script>
+</body>
+</html>
