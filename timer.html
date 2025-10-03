@@ -31,7 +31,7 @@
     </main>
 
     <script>
-    // Countdown with pause/resume
+    // Countdown, pause/resume
     let intervalId = null;
     let remainingMs = 0;
     let isRunning = false;
@@ -58,7 +58,7 @@
     }
 
     function tick() {
-        const step = 100; // update each 100ms
+        const step = 100; // update every 100ms
         remainingMs -= step;
         if (remainingMs <= 0) {
             remainingMs = 0;
@@ -126,13 +126,12 @@
         setButtons({start:true, pause:false, resume:false, stop:false});
     }
 
-    // Wire up buttons
+    // buttons
     document.getElementById('start-btn').addEventListener('click', startTimer);
     document.getElementById('pause-btn').addEventListener('click', pauseTimer);
     document.getElementById('resume-btn').addEventListener('click', resumeTimer);
     document.getElementById('stop-btn').addEventListener('click', stopTimer);
 
-    // Initialize display
     updateDisplay();
     </script>
 </body>
