@@ -10,9 +10,22 @@
     <main class="page">
         <section class="card" role="region" aria-labelledby="timer-title">
             <h1 id="timer-title">Timer</h1>
-            <p class="lead">Ange en tid i millisekunder och starta timern. Du kan pausa och återuppta.</p>
+            <p class="lead">Ange en tid i millisekunder och starta timern.</p>
 
             <div class="display" id="display">00:00.0</div>
+
+            <div class="field">
+                <label for="preset-select">Förval (matlagning)</label>
+                <select id="preset-select">
+                    <option value="" selected>Välj...</option>
+                    <option value="180000">Ägg (lös, 3 min)</option>
+                    <option value="300000">Ägg (medium, 5 min)</option>
+                    <option value="480000">Ägg (hård, 8 min)</option>
+                    <option value="600000">Pasta (10 min)</option>
+                    <option value="720000">Ris (12 min)</option>
+                    <option value="240000">Te (4 min)</option>
+                </select>
+            </div>
 
             <div class="field">
                 <label for="time-input">Tid (ms)</label>
@@ -125,6 +138,21 @@
         document.getElementById('status').className = 'status';
         setButtons({start:true, pause:false, resume:false, stop:false});
     }
+
+    // preset change
+    document.getElementById('preset-select').addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (!val) return; // user picked placeholder
+        const input = document.getElementById('time-input');
+        input.value = val;
+        const status = document.getElementById('status');
+        status.textContent = `Förval vald: ${val} ms.`;
+        status.className = 'status';
+        if (!isRunning && !intervalId) { // update display if idle
+            remainingMs = Number(val);
+            updateDisplay();
+        }
+    });
 
     // buttons
     document.getElementById('start-btn').addEventListener('click', startTimer);
