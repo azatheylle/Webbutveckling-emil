@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="stylestimer.css">
 </head>
 <body>
+    <div class="food-strip" aria-hidden="true">🍳 🥚 🍝 🍚 🍵</div>
     <main class="page">
         <section class="card" role="region" aria-labelledby="timer-title">
-            <h1 id="timer-title">Timer</h1>
-            <p class="lead">Ange en tid i millisekunder och starta timern.</p>
+            <h1 id="timer-title">Matlagningstimer 🍽️</h1>
+            <p class="lead">Välj ett förval eller ange egen tid i millisekunder. Starta, pausa och återuppta.</p>
 
             <div class="display" id="display">00:00.0</div>
 
@@ -18,12 +19,12 @@
                 <label for="preset-select">Förval (matlagning)</label>
                 <select id="preset-select">
                     <option value="" selected>Välj...</option>
-                    <option value="180000">Ägg (lös, 3 min)</option>
-                    <option value="300000">Ägg (medium, 5 min)</option>
-                    <option value="480000">Ägg (hård, 8 min)</option>
-                    <option value="600000">Pasta (10 min)</option>
-                    <option value="720000">Ris (12 min)</option>
-                    <option value="240000">Te (4 min)</option>
+                    <option value="180000">🥚 Ägg (lös, 3 min)</option>
+                    <option value="300000">🥚 Ägg (medium, 5 min)</option>
+                    <option value="480000">🥚 Ägg (hård, 8 min)</option>
+                    <option value="600000">🍝 Pasta (10 min)</option>
+                    <option value="720000">🍚 Ris (12 min)</option>
+                    <option value="240000">🍵 Te (4 min)</option>
                 </select>
             </div>
 
@@ -142,13 +143,13 @@
     // preset change
     document.getElementById('preset-select').addEventListener('change', (e) => {
         const val = e.target.value;
-        if (!val) return; // user picked placeholder
+        if (!val) return; 
         const input = document.getElementById('time-input');
         input.value = val;
         const status = document.getElementById('status');
         status.textContent = `Förval vald: ${val} ms.`;
         status.className = 'status';
-        if (!isRunning && !intervalId) { // update display if idle
+        if (!isRunning && !intervalId) { 
             remainingMs = Number(val);
             updateDisplay();
         }

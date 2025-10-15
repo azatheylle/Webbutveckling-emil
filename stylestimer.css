@@ -1,11 +1,10 @@
-/* Minimal, clean timer styles */
 :root {
-	--bg: #f7f7f8;
-	--text: #111827;
+	--bg: #fffaf3; /* light cream */
+	--text: #1f2937;
 	--muted: #6b7280;
-	--primary: #2563eb;
-	--border: #e5e7eb;
-	--success: #059669;
+	--primary: #ea580c; /* warm orange */
+	--border: #f3e8d7;
+	--success: #16a34a;
 	--danger: #dc2626;
 }
 
@@ -26,7 +25,7 @@ body {
 
 .card {
 	width: min(520px, 94vw);
-	background: #fff;
+	background: #fffdf8;
 	border: 1px solid var(--border);
 	border-radius: 12px;
 	padding: 20px;
@@ -88,4 +87,12 @@ input[type="number"]:focus-visible { outline: 2px solid var(--primary); outline-
 .status { margin-top: 8px; color: var(--muted); min-height: 1.2em; }
 .status.error { color: var(--danger); }
 .status.success { color: var(--success); }
+
+.food-strip {
+	width: min(520px, 94vw);
+	margin: 0 auto 8px;
+	text-align: center;
+	color: var(--primary);
+	font-size: 1.1rem;
+}
 
